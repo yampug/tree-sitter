@@ -1,0 +1,45 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: build
+
+  build:
+    cmds:
+      - make all
+      - |
+        if [ "{{OS}}" = "darwin" ]; then
+          echo "Built: {{.PWD}}/libtree-sitter.dylib"
+        else
+          echo "Built: {{.PWD}}/libtree-sitter.so"
+        fi
+        echo "Built: {{.PWD}}/libtree-sitter.a"
+
+  build-static:
+    cmds:
+      - make static
+      - 'echo "Built: {{.PWD}}/libtree-sitter.a"'
+
+  build-shared:
+    cmds:
+      - make shared
+      - |
+        if [ "{{OS}}" = "darwin" ]; then
+          echo "Built: {{.PWD}}/libtree-sitter.dylib"
+        else
+          echo "Built: {{.PWD}}/libtree-sitter.so"
+        fi
+
+  clean:
+    cmds:
+      - make clean
+      - rm -f libtree-sitter.so* libtree-sitter.dylib*
+
+  install:
+    cmds:
+      - make install
+
+  test:
+    cmds:
+      - make test
